@@ -1,0 +1,33 @@
+version: "3.7"
+networks:
+  network:
+    driver: bridge
+
+services:
+  database:
+    image: mysql/mysql-server:8.0
+    ports:
+      - "3306:3306"
+    restart: always
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+    networks:
+      - network
+
+  aplication:
+    image: aplication/app
+    build: .
+    ports:
+      - 8000:8000
+    volumes:
+      - ./:/app
+    env_file:
+      - .env
+    networks:
+      - network
+    depends_on:
+      database:
+        condition: service_healthy
