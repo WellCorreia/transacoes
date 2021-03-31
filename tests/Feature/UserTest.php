@@ -95,7 +95,7 @@ class UserTest extends TestCase
      * /users/id [DELETE]
      * @return void
      */
-    public function testShouldDeleteMarca(){
+    public function testShouldDeleteUser(){
         $user = User::factory()->create();
 
         $response = $this->call('DELETE', 'api/users/'.$user->id);
@@ -106,7 +106,7 @@ class UserTest extends TestCase
      * /users/id [DELETE]
      * @return void
      */
-    public function testNotShouldDeleteMarca(){
+    public function testNotShouldDeleteUser(){
         $response = $this->call('DELETE', 'api/users/999999999');
         $this->assertEquals(400, $response->original['status']);
     }

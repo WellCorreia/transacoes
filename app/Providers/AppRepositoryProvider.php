@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use App\Repositories\UserRepository;
+use App\Repositories\WalletRepository;
 
 class AppRepositoryProvider extends ServiceProvider
 {
@@ -16,6 +17,7 @@ class AppRepositoryProvider extends ServiceProvider
     {
         $this->app->bind(
             UserRepository::class,
+            WalletRepository::class,
         );
     }
 

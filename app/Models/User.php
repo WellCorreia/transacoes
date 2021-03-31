@@ -10,6 +10,10 @@ class User extends Model
     use HasFactory;
     use SoftDeletes;
 
+    protected $table = 'users';
+
+    protected $primaryKey = 'id';
+    
     /**
      * The attributes that are mass assignable.
      *
@@ -23,12 +27,14 @@ class User extends Model
         'type'
     ];
 
+
     /**
-     * The attributes that should be hidden for arrays.
+     * Get the user that owns the User
      *
-     * @var array
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    protected $hidden = [
-        'senha',
-    ];
+    public function wallet(): BelongsTo
+    {
+        return $this->belongsTo(Wallet::class);
+    }
 }
