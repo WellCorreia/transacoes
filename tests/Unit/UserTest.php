@@ -3,8 +3,10 @@
 namespace Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
+use App\Services\UserService;
+use App\Models\User;
 
-class ExampleTest extends TestCase
+class UserTest extends TestCase
 {
     /**
      * A basic test example.

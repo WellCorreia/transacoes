@@ -13,7 +13,6 @@ class UserService
     $this->repository = $userRepository;
   }
 
-
   /**
    * Find all users
    * @return array
@@ -62,34 +61,6 @@ class UserService
   }
 
   /**
-   * find user by email and cpf_cnpj
-   * @param string $email
-   * @param string $cpf_cnpj
-   * @return array
-   */
-  public function findUserByEmailOrCPFCNPJ(string $email, string $cpf_cnpj) {
-    try {
-      $users = $this->repository->findUserByEmailOrCPFCNPJ($email, $cpf_cnpj);
-      if (!empty($user)) {
-        return [
-          'status' => 200,
-          'message' => 'User found',
-          'user' => $user
-        ];
-      }
-      return [
-        'status' => 400,
-        'message' => 'User not found',
-      ];
-    } catch (\Throwable $th) {
-      return [
-        'status' => 500, 
-        'message' => $th->getMessage()
-      ];
-    }
-  }
-
-  /**
    * Create user
    * @param array $user
    * @return array
@@ -109,7 +80,7 @@ class UserService
         ];  
       }
       return [
-        'status' => 200,
+        'status' => 400,
         'message' => 'User already exist',
       ];  
     } catch (\Throwable $th) {

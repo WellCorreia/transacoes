@@ -32,7 +32,7 @@ class UserRequest extends FormRequest
             'name' => ['required', 'max:255'],
             'password' => ['required', 'max:255'],
             'email' => ['required', 'max:255', 'email'],
-            'cpf_cnpj' => ['required', new ValidateCPFCNPJ, 'max:14'],
+            'cpf_cnpj' => ['required', new ValidateCPFCNPJ, 'max:30'],
             'type' => ['required', 'max:255'],
         ];
     }

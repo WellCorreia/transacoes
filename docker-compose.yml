@@ -17,8 +17,8 @@ services:
     networks:
       - network
 
-  producer-api:
-    image: producer-api/app
+  transacoes-api:
+    image: transacoes-api/app
     build: .
     ports:
       - 8000:8000
@@ -31,22 +31,3 @@ services:
     depends_on:
       mysql-database:
         condition: service_healthy
-
-  # consumer-api:
-  #   image: consumer-api/app
-  #   build: ./consumer-api
-  #   ports:
-  #     - 9000:9000
-  #   volumes:
-  #     - ./app
-  #   env_file:
-  #     - consumer-api/.env
-  #   networks:
-  #     - network
-  #   depends_on:
-  #     mysql-database:
-  #       condition: service_healthy
-  #   depends_on:
-  #     - rabbitmq
-  #   links:
-  #     - rabbitmq

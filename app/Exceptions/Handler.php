@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
+use ObjectNotFoundException;
 
 class Handler extends ExceptionHandler
 {
@@ -36,6 +37,11 @@ class Handler extends ExceptionHandler
     {
         $this->reportable(function (Throwable $e) {
             //
+        });
+        $this->reportable(function (ObjectNotFoundException $e, $request) {
+            return response()->json([
+                'status' => 400,
+                'message' => 'Object not found']);
         });
     }
 }
