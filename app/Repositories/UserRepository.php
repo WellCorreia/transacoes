@@ -3,8 +3,9 @@
 namespace App\Repositories;
 
 use App\Models\User;
+use App\Repositories\Interfaces\UserRepositoryInterface;
 
-class UserRepository {
+class UserRepository implements UserRepositoryInterface{
 
     private User $user;
 
@@ -18,7 +19,7 @@ class UserRepository {
      * @return array
      */
     public function findById(int $id) {
-        return $this->user->find($id);
+        return $this->user->with('wallet')->find($id);
     }
 
     /**
@@ -26,7 +27,7 @@ class UserRepository {
      * @return array
      */
     public function findAll() {
-        return $this->user->paginate();
+        return $this->user->with('wallet')->paginate();
     }
 
     /**

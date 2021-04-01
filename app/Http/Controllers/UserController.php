@@ -27,16 +27,29 @@ class UserController extends Controller
         return response()->json($response)->setStatusCode($response['status']);
     }
 
+    // /**
+    //  * Store a newly created resource in storage.
+    //  *
+    //  * @param  App\Http\Requests\UserRequest  $request
+    //  * @return \Illuminate\Http\Response
+    //  */
+    // public function store(UserRequest $request)
+    // {
+    //     $user = $request->all();
+    //     $response = $this->service->create($user);
+    //     return response()->json($response)->setStatusCode($response['status']);
+    // }
+    
     /**
      * Store a newly created resource in storage.
      *
      * @param  App\Http\Requests\UserRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(UserRequest $request)
+    public function storeUserWithWallet(UserRequest $request)
     {
         $user = $request->all();
-        $response = $this->service->create($user);
+        $response = $this->service->createUserWithWallet($user);
         return response()->json($response)->setStatusCode($response['status']);
     }
 

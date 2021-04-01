@@ -29,7 +29,7 @@ class ValidateCPFCNPJ implements Rule
     {
         $cpf = new CPF($value);
         $cnpj = new CNPJ($value);
-        return $cnpj->isValid() || $cnpj->isValid();
+        return $cpf->isValid() || $cnpj->isValid();
     }
 
     /**

@@ -3,14 +3,21 @@
 namespace App\Services;
 
 use App\Repositories\UserRepository;
+use App\Repositories\Interfaces\UserRepositoryInterface;
+use App\Services\WalletService;
+use App\Services\Interfaces\UserServiceInterface;
+use App\Services\Interfaces\WalletServiceInterface;
+use DB;
 
-class UserService
+class UserService implements UserServiceInterface
 {
-  private UserRepository $repository;
+  protected $repository;
+  protected $walletService;
 
-  public function __construct(UserRepository $userRepository)
+  public function __construct(UserRepositoryInterface $userRepository, WalletServiceInterface $walletService)
   {
     $this->repository = $userRepository;
+    $this->walletService = $walletService;
   }
 
   /**
@@ -60,35 +67,62 @@ class UserService
     }
   }
 
-  /**
-   * Create user
-   * @param array $user
+    /**
+   * Create user and wallet
+   * @param array $user with value wallet
    * @return array
    */
-  public function create(array $user) {
-    try {
-      $email = $user['email'];
-      $cpf_cnpj = $user['cpf_cnpj'];
+  public function createUserWithWallet(array $user) {
 
-      $userExist = $this->repository->findUserByEmailOrCPFCNPJ($email, $cpf_cnpj);
-      if (empty($userExist)) {
-        $user = $this->repository->create($user);
+    return DB::transaction(function () use ($user) {
+      try {
+        
+        $email = $user['email'];
+        $cpf_cnpj = $user['cpf_cnpj'];
+        $userExist = $this->repository->findUserByEmailOrCPFCNPJ($email, $cpf_cnpj);
+        if (empty($userExist)) {
+          
+          $userCreated = $this->repository->create($user);
+          
+          if (!empty($userCreated)) {
+            $wallet = [
+              'user_id' => $userCreated->id,
+              'value' => $user['value_wallet'],
+            ];
+            
+            $wallet = $this->walletService->create($wallet);
+
+            if ($wallet['status'] != 201) {
+              DB::rollback();
+              return [
+                'status' => $wallet['status'], 
+                'message' => $wallet['message']
+              ];
+            }
+            DB::commit();
+            return [
+              'status' => 201,
+              'message' => 'Created user with wallet',
+              'user' => $user
+            ]; 
+          }
+
+        }
         return [
-          'status' => 201,
-          'message' => 'Created user',
-          'user' => $user
-        ];  
+          'status' => 400,
+          'message' => 'User already exist',
+        ];
+      
+      } catch (\Throwable $th) {
+        DB::rollback();
+        
+        return [
+          'status' => 500, 
+          'message' => $th->getMessage()
+        ];
       }
-      return [
-        'status' => 400,
-        'message' => 'User already exist',
-      ];  
-    } catch (\Throwable $th) {
-      return [
-        'status' => 500, 
-        'message' => $th->getMessage()
-      ];
-    }
+
+    });
   }
 
   /**

@@ -21,6 +21,7 @@ use App\Http\Controllers\WalletController;
 // });
 
 
+Route::post('users/wallet', [UserController::class, 'storeUserWithWallet']);
 Route::resource('users', UserController::class);
 
 Route::resource('wallets', WalletController::class);

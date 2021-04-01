@@ -33,8 +33,8 @@ class User extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function wallet(): BelongsTo
+    public function wallet()
     {
-        return $this->belongsTo(Wallet::class);
+        return $this->hasOne(Wallet::class, 'user_id');
     }
 }

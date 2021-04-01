@@ -3,18 +3,17 @@
 namespace App\Services;
 
 use App\Repositories\WalletRepository;
-
 use App\Services\UserService;
+use App\Services\Interfaces\UserServiceInterface;
+use App\Services\Interfaces\WalletServiceInterface;
 
-class WalletService
+class WalletService implements WalletServiceInterface
 {
-  private WalletRepository $repository;
-  private UserService $userService;
+  protected $repository;
 
-  public function __construct(WalletRepository $walletRepository, UserService $userService)
+  public function __construct(WalletRepository $walletRepository)
   {
     $this->repository = $walletRepository;
-    $this->userService = $userService;
   }
 
   /**
@@ -27,7 +26,7 @@ class WalletService
       return [
         'status' => 200,
         'message' => 'Wallet founds',
-        'users' => $wallets
+        'wallets' => $wallets
       ];
     } catch (\Throwable $th) {
       return [
@@ -71,46 +70,11 @@ class WalletService
    */
   public function create(array $wallet) {
     try {
-      $userExist = $this->userService->findById($wallet['user_id']);
-      if ($userExist['status'] == 200) {
-        $wallet = $this->repository->create($wallet);
-        return [
-          'status' => 201,
-          'message' => 'Created wallet',
-          'wallet' => $wallet
-        ];  
-      }
+      $wallet = $this->repository->create($wallet);
       return [
-        'status' => 400,
-        'message' => 'User not found',
-      ];  
-    } catch (\Throwable $th) {
-      return [
-        'status' => 500, 
-        'message' => $th->getMessage()
-      ];
-    }
-  }
-
-  /**
-   * Update wallet
-   * @param array $wallet
-   * @param int $id
-   * @return array
-   */
-  public function update(array $wallet, int $id) {
-    try {
-      $userExist = $this->userService->findById($id);
-      if ($userExist['status'] == 200) {
-        $this->repository->update($wallet, $id);
-        return [
-          'status' => 200,
-          'message' => 'User updated',
-        ];
-      }
-      return [
-        'status' => 400,
-        'message' => 'User not found',
+        'status' => 201,
+        'message' => 'Created wallet',
+        'wallet' => $wallet
       ];
     } catch (\Throwable $th) {
       return [

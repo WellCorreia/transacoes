@@ -3,8 +3,9 @@
 namespace App\Repositories;
 
 use App\Models\Wallet;
+use App\Repositories\Interfaces\WalletRepositoryInterface;
 
-class WalletRepository {
+class WalletRepository implements WalletRepositoryInterface{
 
     private Wallet $wallet;
 
@@ -17,7 +18,7 @@ class WalletRepository {
      * @param int $id
      */
     public function findById(int $id) {
-        return $this->wallet->find($id);
+        return $this->wallet->with('user')->find($id);
     }
 
     /**
@@ -25,7 +26,7 @@ class WalletRepository {
      * @return array
      */
     public function findAll() {
-        return $this->wallet->paginate();
+        return $this->wallet->with('user')->paginate();
     }
 
     /**

@@ -26,18 +26,18 @@ class WalletController extends Controller
         return response()->json($response)->setStatusCode($response['status']);
     }
 
-     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  App\Http\Requests\WalletRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(WalletRequest $request)
-    {
-        $wallet = $request->all();
-        $response = $this->service->create($wallet);
-        return response()->json($response)->setStatusCode($response['status']);
-    }
+    //  /**
+    //  * Store a newly created resource in storage.
+    //  *
+    //  * @param  App\Http\Requests\WalletRequest  $request
+    //  * @return \Illuminate\Http\Response
+    //  */
+    // public function store(WalletRequest $request)
+    // {
+    //     $wallet = $request->all();
+    //     $response = $this->service->create($wallet);
+    //     return response()->json($response)->setStatusCode($response['status']);
+    // }
 
     /**
      * Display the specified resource.
@@ -51,19 +51,19 @@ class WalletController extends Controller
         return response()->json($response)->setStatusCode($response['status']);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  App\Http\Requests\WalletRequest  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(WalletRequest $request, $id)
-    {
-        $wallet = $request->all();
-        $response = $this->service->update($wallet, $id);
-        return response()->json($response)->setStatusCode($response['status']);
-    }
+    // /**
+    //  * Update the specified resource in storage.
+    //  *
+    //  * @param  App\Http\Requests\WalletRequest  $request
+    //  * @param  int  $id
+    //  * @return \Illuminate\Http\Response
+    //  */
+    // public function update(WalletRequest $request, $id)
+    // {
+    //     $wallet = $request->all();
+    //     $response = $this->service->update($wallet, $id);
+    //     return response()->json($response)->setStatusCode($response['status']);
+    // }
 
     /**
      * Remove the specified resource from storage.

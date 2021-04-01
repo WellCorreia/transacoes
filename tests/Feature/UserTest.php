@@ -6,6 +6,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\User;
+use App\Models\Wallet;
 
 class UserTest extends TestCase
 {
@@ -43,28 +44,30 @@ class UserTest extends TestCase
     }
 
     /**
-     * A user must be created
+     * A user must be created with wallet
      * /users [POST]
      * @return void
      */
-    public function testShouldCreateUser(){
-        $user = User::factory()->make()->toArray();
-        $response = $this->call('POST', 'api/users', $user);
+    public function testShouldCreateUserWithWallet(){
+        $user = User::factory()->make(['value_wallet' => 56.42])->toArray();
+        $response = $this->call('POST', 'api/users/wallet', $user);
 
         $this->assertEquals(201, $response->original['status']);
         $this->assertEquals($user['cpf_cnpj'], $response->original['user']['cpf_cnpj']);
     }
+
     /**
-     * Must not be created user, because already exist a with same cpf_cnpj
+     * A user must be created with wallet
      * /users [POST]
      * @return void
      */
-    public function testNotShouldCreateUser(){
-        $user = User::factory()->create()->toArray();
-        
-        $response = $this->call('POST', 'api/users', $user);
-        $this->assertEquals(400, $response->original['status']);
+    public function testNotShouldCreateUserWithWallet(){
+        $user = User::factory()->make()->toArray();
+        $response = $this->call('POST', 'api/users/wallet', $user);
+
+        $this->assertEquals(500, $response->original['status']);
     }
+
     /**
      * A user must be updated
      * /users/id [PUT]

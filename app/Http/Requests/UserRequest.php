@@ -34,6 +34,7 @@ class UserRequest extends FormRequest
             'email' => ['required', 'max:255', 'email'],
             'cpf_cnpj' => ['required', new ValidateCPFCNPJ, 'max:30'],
             'type' => ['required', 'max:255'],
+            'value_wallet' => ['min:0'],
         ];
     }
 

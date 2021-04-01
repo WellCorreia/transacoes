@@ -28,7 +28,7 @@ class UserFactory extends Factory
             'email' => $faker->unique()->safeEmail,
             'cpf_cnpj' => $faker->cnpj,
             'password' => '123',
-            'type' => 'user'
+            'type' => 'user',
         ];
     }
 }
