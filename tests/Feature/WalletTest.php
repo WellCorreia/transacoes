@@ -57,7 +57,7 @@ class WalletTest extends TestCase
         $response = $this->call('POST', 'api/wallets', $wallet);
 
         $this->assertEquals(201, $response->original['status']);
-        $this->assertEquals($user['value'], $response->original['wallet']['value']);
+        $this->assertEquals($wallet['value'], $response->original['wallet']['value']);
     }
     /**
      * Must not be created a wallet, because not have user
@@ -93,11 +93,13 @@ class WalletTest extends TestCase
         $wallet['value'] = 42.00;
 
         $response = $this->call('PUT', 'api/wallets/9999999', $wallet);
+        dump($wallet);
+        dump($response);
         $this->assertEquals(400, $response->original['status']);
     }
 
     /**
-     * A user must be wallet
+     * A user has must wallet
      * /wallets/id [DELETE]
      * @return void
      */

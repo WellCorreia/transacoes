@@ -15,6 +15,7 @@ class UserRepository {
     /**
      * Receive a ID and return user
      * @param int $id
+     * @return array
      */
     public function findById(int $id) {
         return $this->user->find($id);
@@ -28,6 +29,12 @@ class UserRepository {
         return $this->user->paginate();
     }
 
+    /**
+     * Return all users
+     * @param string $email
+     * @param string $cpf_cnpj
+     * @return array
+     */
     public function findUserByEmailOrCPFCNPJ(string $email, string $cpf_cnpj) {
         return $this->user
         ->where('email', $email)
@@ -36,21 +43,27 @@ class UserRepository {
     }
     /**
      * Receive a user, create and return it
-     * @param User $user
+     * @param array $user
+     * @return array
      */
     public function create(array $user) {
         return $this->user->create($user);
     }
 
     /**
-     * Método responsável por atualizar a User
+     * Receive a wallet and an ID, update it and return
+     * @param array $user
+     * @param int $id
+     * @return array
      */
     public function update(array $user, int $id) {
         return $this->user->find($id)->update($user);
     }
 
      /**
-     * Método responsável por deletar a User
+     * Receive a ID and remove
+     * @param int $id
+     * @return boolean
      */
     public function delete(int $id) {
         return $this->user->find($id)->delete();

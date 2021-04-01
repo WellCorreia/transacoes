@@ -17,6 +17,9 @@ class AppRepositoryProvider extends ServiceProvider
     {
         $this->app->bind(
             UserRepository::class,
+        );
+
+        $this->app->bind(
             WalletRepository::class,
         );
     }

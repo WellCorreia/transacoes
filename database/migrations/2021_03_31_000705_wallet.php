@@ -16,8 +16,8 @@ class Wallet extends Migration
         Schema::create('wallets', function (Blueprint $table) {
             $table->id();
             $table->double('value', 15, 2)->nullable();
-            $table->unsignedBigInteger('user')->nullable();
-            $table->foreign('user')->references('id')->on('users');
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
             $table->softDeletes();
         });

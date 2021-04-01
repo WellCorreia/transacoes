@@ -17,6 +17,8 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(
             UserService::class,
+        );
+        $this->app->bind(
             WalletService::class,
         );
     }
