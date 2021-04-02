@@ -126,7 +126,7 @@ class TransactionTest extends TestCase
         $userPayer = User::factory()->create(['type' => 'shopkeeper']);
         $walletPayer = Wallet::factory()->create([
             'user_id' => $userPayer->id,
-            'value' => 50.00,
+            'value' => 150.00,
             ]);
 
         $userPayee = User::factory()->create();
@@ -138,7 +138,7 @@ class TransactionTest extends TestCase
         $transaction  = Transaction::factory()->create([
             'payer_id' => $userPayer->id,
             'payee_id' => $userPayer->id,
-            'value' => 150.00,
+            'value' => 100.00,
             ]);
 
         $response = $this->call('POST', 'api/transactions');
