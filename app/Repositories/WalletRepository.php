@@ -22,7 +22,7 @@ class WalletRepository implements WalletRepositoryInterface{
     }
 
     /**
-     * Return all users
+     * Return all wallets
      * @return array
      */
     public function findAll() {

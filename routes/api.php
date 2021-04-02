@@ -25,3 +25,5 @@ Route::post('users/wallet', [UserController::class, 'storeUserWithWallet']);
 Route::resource('users', UserController::class);
 
 Route::resource('wallets', WalletController::class);
+
+Route::resource('transactions', TransactionController::class);
