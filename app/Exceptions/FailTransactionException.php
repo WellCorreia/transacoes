@@ -4,9 +4,8 @@ namespace App\Exceptions;
 
 use Exception;
 
-class ObjectNotFoundException extends Exception
+class FailTransactionException extends Exception
 {
-
     /**
     * Report the exception.
     *
@@ -36,11 +35,7 @@ class ObjectNotFoundException extends Exception
         return parent::render($request, $exception);
    }
 
-   /**
-    * Return status code expection
-    * @return int $status
-    */
-    public function getStatusCode() {
-        return 400;
-    }
+   public function getStatusCode() {
+       return 400;
+   }
 }

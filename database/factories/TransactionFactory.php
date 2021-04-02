@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Transaction;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\User;
 
 class TransactionFactory extends Factory
 {

@@ -7,6 +7,11 @@ use App\Services\UserService;
 use App\Services\Interfaces\UserServiceInterface;
 use App\Services\Interfaces\WalletServiceInterface;
 
+use App\Exceptions\ObjectNotFoundException;
+use App\Exceptions\FailTransactionException;
+
+use Exception;
+
 class WalletService implements WalletServiceInterface
 {
   protected $repository;
@@ -85,18 +90,20 @@ class WalletService implements WalletServiceInterface
   }
 
   /**
-   * Delete wallet by id
+   * Update wallet by id
+   * @param array $wallet
    * @param int $id
    * @return array
    */
-  public function delete(int $id) {
+  public function update(array $wallet, int $id) {
     try {
-      $wallet = $this->repository->findById($id);
-      if (!empty($wallet)) {
-        $this->repository->delete($id);
+      $walletExist = $this->repository->findById($id);
+      if (!empty($walletExist)) {
+        $wallet = $this->repository->update($wallet, $id);
         return [
           'status' => 200,
-          'message' => 'User deleted',
+          'message' => 'User Updated',
+          'wallet' => $wallet
         ];
       }
       return [
@@ -111,4 +118,78 @@ class WalletService implements WalletServiceInterface
     }
   }
 
+  /**
+   * Delete wallet by id
+   * @param int $id
+   * @return array
+   */
+  public function delete(int $id) {
+    try {
+      $wallet = $this->repository->findById($id);
+      if (!empty($wallet)) {
+        $this->repository->delete($id);
+        return [
+          'status' => 200,
+          'message' => 'Transaction deleted',
+        ];
+      }
+      return [
+        'status' => 400,
+        'message' => 'Transaction not found',
+      ];
+    } catch (\Throwable $th) {
+      return [
+        'status' => 500, 
+        'message' => $th->getMessage()
+      ];
+    }
+  }
+
+  /**
+   * Subtract wallet value
+   * @param int $wallet_id
+   * @param float $value
+   * @return array
+   */
+  public function subtractWalletValue(int $wallet_id, float $value): array {
+      $wallet = $this->repository->findById($wallet_id);
+      if (empty($wallet)) {
+        throw new ObjectNotFoundException("Wallet not found");
+      }
+      
+      if ($wallet->value < $value || $value == 0) {
+        throw new FailTransactionException("Insufficient wallet value a transaction");
+      }
+      
+      $updateWallet = [
+        'user_id' => $wallet['user_id'],
+        'value' => $wallet['value'] - $value,
+      ];
+
+      return $this->update($updateWallet, $wallet_id);
+  }
+
+  /**
+   * Sum wallet value
+   * @param int $wallet_id
+   * @param float $value
+   * @return array
+   */
+  public function sumWalletValue(int $wallet_id, float $value): array {
+      $wallet = $this->repository->findById($wallet_id);
+      if (empty($wallet)) {
+        throw new ObjectNotFoundException("Wallet not found");
+      }
+
+      if ($value == 0) {
+        throw new FailTransactionException("Insufficient wallet value a transaction");
+      }
+
+      $updateWallet = [
+        'user_id' => $wallet['user_id'],
+        'value' => $wallet['value'] + $value,
+      ];
+      
+      return $this->update($updateWallet, $wallet_id);
+  }
 }

@@ -3,9 +3,9 @@
 namespace App\Repositories;
 
 use App\Models\Transaction;
-use App\Repositories\Interfaces\UserRepositoryInterface;
+use App\Repositories\Interfaces\TransactionRepositoryInterface;
 
-class TransactionRepository implements UserRepositoryInterface{
+class TransactionRepository implements TransactionRepositoryInterface{
 
     private Transaction $transaction;
 
@@ -19,7 +19,7 @@ class TransactionRepository implements UserRepositoryInterface{
      * @return array
      */
     public function findById(int $id) {
-        return $this->transaction->with('payer', 'payee')->find($id);
+        return $this->transaction->with('payer.wallet', 'payee.wallet')->find($id);
     }
 
     /**
@@ -27,7 +27,7 @@ class TransactionRepository implements UserRepositoryInterface{
      * @return array
      */
     public function findAll() {
-        return $this->transaction->with('payer', 'payee')->paginate();
+        return $this->transaction->with('payer.wallet', 'payee.wallet')->paginate();
     }
 
     /**

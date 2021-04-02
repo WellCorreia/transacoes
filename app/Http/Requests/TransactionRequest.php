@@ -9,7 +9,7 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
 
-class WalletRequest extends FormRequest
+class TransactionRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -29,12 +29,13 @@ class WalletRequest extends FormRequest
     public function rules()
     {
         return [
-            'user_id' => ['required', 'numeric'],
-            'value' => ['required'],
+            'value' => ['required', 'min:1'],
+            'payer_id' => ['required', 'numeric'],
+            'payee_id' => ['required', 'numeric'],
         ];
     }
 
-     /**
+    /**
      * Handle a failed validation attempt.
      *
      * @param  \Illuminate\Contracts\Validation\Validator $validator
