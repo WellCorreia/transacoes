@@ -7,5 +7,5 @@ interface NotificationServiceInterface
 {
   public function findAll(): array;
   public function findById(int $id): array;
-  // public function create(array $notification): array;
+  public function create(array $notification): array;
 }

@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 use App\Services\WalletService;
 use App\Services\UserService;
 use App\Services\TransactionService;
+use App\Services\NotificationService;
 use App\Repositories\TransactionRepository;
 
 class TransactionTest extends TestCase

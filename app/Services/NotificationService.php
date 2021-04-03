@@ -9,7 +9,6 @@ use DB;
 class NotificationService implements NotificationServiceInterface
 {
   protected $repository;
-  protected $walletService;
 
   public function __construct(NotificationRepository $notificationRepository)
   {
@@ -54,6 +53,27 @@ class NotificationService implements NotificationServiceInterface
       return [
         'status' => 400,
         'message' => 'Notification not found',
+      ];
+    } catch (\Throwable $th) {
+      return [
+        'status' => 500, 
+        'message' => $th->getMessage()
+      ];
+    }
+  }
+
+  /**
+   * Create notification
+   * @param array $notification
+   * @return array
+   */
+  public function create(array $notification): array {
+    try {
+      $notification = $this->repository->create($notification);
+      return [
+        'status' => 201,
+        'message' => 'Created notification',
+        'notification' => $notification
       ];
     } catch (\Throwable $th) {
       return [

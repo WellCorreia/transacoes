@@ -18,16 +18,19 @@ class TransactionService implements TransactionServiceInterface
   protected TransactionRepository $repository;
   protected UserService $userService;
   protected WalletService $walletService;
+  protected NotificationService $notificationService;
 
   public function __construct(
     TransactionRepository $transactionRepository,
     UserService $userService,
-    WalletService $walletService
+    WalletService $walletService,
+    NotificationService $notificationService
     )
     {
       $this->repository = $transactionRepository;
       $this->userService = $userService;
       $this->walletService = $walletService;
+      $this->notificationService = $notificationService;
     }
 
   /**
@@ -104,10 +107,20 @@ class TransactionService implements TransactionServiceInterface
           return [ 'status' => 400, 'message' => "Unauthorized external service"];
         }
 
+        $createdTransaction = $this->repository->create($transaction);
+
+        $createdNotification = $this->notificationService->create([
+          'reference_type' => 'transaction',
+          'reference_id' => $createdTransaction->id,
+          'message' => 'Send: R$'.$transaction['value'].' From: '.$payer['user']['name'].' To: '.$payee['user']['name'],
+          'status' => 'pending'
+        ]);
+
         DB::commit();
         return [
           'status' => 201, 
-          'message' => "Create transaction",
+          'message' => "Create transaction and send notification",
+          'transaction' => $createdNotification
         ];
       } catch (\Throwable $th) {
         DB::rollback();
