@@ -146,12 +146,12 @@ class WalletService implements WalletServiceInterface
   }
 
   /**
-   * Subtract wallet value
+   * Debit wallet value
    * @param int $wallet_id
    * @param float $value
    * @return array
    */
-  public function subtractWalletValue(int $wallet_id, float $value): array {
+  public function debitWalletValue(int $wallet_id, float $value): array {
       $wallet = $this->repository->findById($wallet_id);
       if (empty($wallet)) {
         throw new ObjectNotFoundException("Wallet not found");
@@ -170,12 +170,12 @@ class WalletService implements WalletServiceInterface
   }
 
   /**
-   * Sum wallet value
+   * Credit wallet value
    * @param int $wallet_id
    * @param float $value
    * @return array
    */
-  public function sumWalletValue(int $wallet_id, float $value): array {
+  public function creditWalletValue(int $wallet_id, float $value): array {
       $wallet = $this->repository->findById($wallet_id);
       if (empty($wallet)) {
         throw new ObjectNotFoundException("Wallet not found");

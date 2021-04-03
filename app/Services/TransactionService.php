@@ -97,8 +97,8 @@ class TransactionService implements TransactionServiceInterface
           return [ 'status' => 400, 'message' => "Shopkeepers cannot be payer"];
         }
 
-        $payerDebit = $this->walletService->subtractWalletValue($payer['user']['wallet']['id'], $transaction['value']);
-        $payeeCredit = $this->walletService->sumWalletValue($payee['user']['wallet']['id'], $transaction['value']);
+        $payerDebit = $this->walletService->debitWalletValue($payer['user']['wallet']['id'], $transaction['value']);
+        $payeeCredit = $this->walletService->creditWalletValue($payee['user']['wallet']['id'], $transaction['value']);
 
         if (!$this->externalAuthorizingService()) {
           return [ 'status' => 400, 'message' => "Unauthorized external service"];

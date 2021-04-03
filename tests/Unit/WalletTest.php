@@ -48,11 +48,11 @@ class WalletTest extends TestCase
 
 
     /**
-     * Should updated wallet with subtract value.
+     * Should updated wallet with debit value.
      *
      * @return void
      */
-    public function testShouldUpdatedWalletWithSubtractValue()
+    public function testShouldUpdatedWalletWithDebitValue()
     {
         $user = User::factory()->create();
         $wallet = Wallet::factory([
@@ -78,17 +78,17 @@ class WalletTest extends TestCase
 
         $walletService = new WalletService($repository);
         
-        $response = $walletService->subtractWalletValue($wallet->id, 21.00);
+        $response = $walletService->debitWalletValue($wallet->id, 21.00);
 
         $this->assertEquals(200, $response['status']);
     }
 
     /**
-     * Not should updated wallet with subtract value, wallet not found.
+     * Not should updated wallet with debit value, wallet not found.
      *
      * @return void
      */
-    public function testNotShouldUpdatedWalletWithSubtractValueWalletNotFound()
+    public function testNotShouldUpdatedWalletWithDebitValueWalletNotFound()
     {
         $user = User::factory()->create();
         $wallet = Wallet::factory([
@@ -111,15 +111,15 @@ class WalletTest extends TestCase
         
         $this->expectException(ObjectNotFoundException::class);
 
-        $response = $walletService->subtractWalletValue(500, 21.00);
+        $response = $walletService->debitWalletValue(500, 21.00);
     }
 
     /**
-     * Not should updated wallet with subtract value, because value equal zero.
+     * Not should updated wallet with debit value, because value equal zero.
      *
      * @return void
      */
-    public function testNotShouldUpdatedWalletWithSubtractValueBecauseValueEqualZero()
+    public function testNotShouldUpdatedWalletWithDebitValueBecauseValueEqualZero()
     {
         $user = User::factory()->create();
         $wallet = Wallet::factory([
@@ -142,15 +142,15 @@ class WalletTest extends TestCase
         
         $this->expectException(FailTransactionException::class);
 
-        $response = $walletService->subtractWalletValue($wallet->id, 0);
+        $response = $walletService->debitWalletValue($wallet->id, 0);
     }
 
     /**
-     * Should updated wallet with sum value.
+     * Should updated wallet with credit value.
      *
      * @return void
      */
-    public function testShouldUpdatedWalletWithSumValue()
+    public function testShouldUpdatedWalletWithValue()
     {
         $user = User::factory()->create();
         $wallet = Wallet::factory([
@@ -176,17 +176,17 @@ class WalletTest extends TestCase
 
         $walletService = new WalletService($repository);
         
-        $response = $walletService->sumWalletValue($wallet->id, 21.00);
+        $response = $walletService->creditWalletValue($wallet->id, 21.00);
 
         $this->assertEquals(200, $response['status']);
     }
 
     /**
-     * Not should updated wallet with sum value, wallet not found.
+     * Not should updated wallet with credit value, wallet not found.
      *
      * @return void
      */
-    public function testNotShouldUpdatedWalletWithSumValueWalletNotFound()
+    public function testNotShouldUpdatedWalletWithValueWalletNotFound()
     {
         $user = User::factory()->create();
         $wallet = Wallet::factory([
@@ -209,15 +209,15 @@ class WalletTest extends TestCase
         
         $this->expectException(ObjectNotFoundException::class);
 
-        $response = $walletService->sumWalletValue(500, 21.00);
+        $response = $walletService->creditWalletValue(500, 21.00);
     }
 
     /**
-     * Not should updated wallet with subtract value, because value equal zero.
+     * Not should updated wallet with debit value, because value equal zero.
      *
      * @return void
      */
-    public function testNotShouldUpdatedWalletWithSumValueBecauseValueEqualZero()
+    public function testNotShouldUpdatedWalletWithValueBecauseValueEqualZero()
     {
         $user = User::factory()->create();
         $wallet = Wallet::factory([
@@ -240,6 +240,6 @@ class WalletTest extends TestCase
         
         $this->expectException(FailTransactionException::class);
 
-        $response = $walletService->sumWalletValue($wallet->id, 0);
+        $response = $walletService->creditWalletValue($wallet->id, 0);
     }
 }
