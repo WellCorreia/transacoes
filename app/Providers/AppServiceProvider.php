@@ -6,9 +6,11 @@ use Illuminate\Support\ServiceProvider;
 use App\Services\UserService;
 use App\Services\WalletService;
 use App\Services\TransactionService;
+use App\Services\NotificationService;
 use App\Services\Interfaces\UserServiceInterface;
 use App\Services\Interfaces\WalletServiceInterface;
 use App\Services\Interfaces\TransactionServiceInterface;
+use App\Services\Interfaces\NotificationServiceInterface;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -30,8 +32,13 @@ class AppServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
-            WalletServiceInterface::class,
-            WalletService::class,
+            TransactionServiceInterface::class,
+            TransactionService::class,
+        );
+
+        $this->app->bind(
+            NotificationServiceInterface::class,
+            NotificationService::class,
         );
     }
 
