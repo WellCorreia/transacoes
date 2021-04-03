@@ -37,13 +37,13 @@ class TransactionTest extends TestCase
 
         $userPayee = User::factory()->create();
         $walletPayee = Wallet::factory()->create([
-            'user_id' => $userPayer->id,
+            'user_id' => $userPayee->id,
             'value' => 25.00,
             ]);
 
         $transaction  = Transaction::factory()->create([
             'payer_id' => $userPayer->id,
-            'payee_id' => $userPayer->id,
+            'payee_id' => $userPayee->id,
             'value' => 25.00,
             ]);
 
@@ -80,19 +80,18 @@ class TransactionTest extends TestCase
 
         $userPayee = User::factory()->create();
         $walletPayee = Wallet::factory()->create([
-            'user_id' => $userPayer->id,
+            'user_id' => $userPayee->id,
             'value' => 25.00,
             ]);
 
         $transaction  = Transaction::factory()->make([
             'payer_id' => $userPayer->id,
-            'payee_id' => $userPayer->id,
+            'payee_id' => $userPayee->id,
             'value' => 25.00,
             ])->toArray();
 
         $response = $this->call('POST', 'api/transactions', $transaction);
-
-        $this->assertEquals(200, $response->original['status']);
+        $this->assertEquals(201, $response->original['status']);
     }
 
     /**
@@ -111,13 +110,13 @@ class TransactionTest extends TestCase
 
         $userPayee = User::factory()->create();
         $walletPayee = Wallet::factory()->create([
-            'user_id' => $userPayer->id,
+            'user_id' => $userPayee->id,
             'value' => 25.00,
             ]);
 
         $transaction  = Transaction::factory()->make([
             'payer_id' => $userPayer->id,
-            'payee_id' => $userPayer->id,
+            'payee_id' => $userPayee->id,
             'value' => 25.00,
             ])->toArray();
 
@@ -142,13 +141,13 @@ class TransactionTest extends TestCase
 
         $userPayee = User::factory()->create();
         $walletPayee = Wallet::factory()->create([
-            'user_id' => $userPayer->id,
+            'user_id' => $userPayee->id,
             'value' => 25.00,
             ]);
 
         $transaction  = Transaction::factory()->make([
             'payer_id' => $userPayer->id,
-            'payee_id' => $userPayer->id,
+            'payee_id' => $userPayee->id,
             'value' => 25.00,
             ])->toArray();
 
@@ -167,7 +166,7 @@ class TransactionTest extends TestCase
         $userPayer = User::factory()->create();
         $walletPayer = Wallet::factory()->create([
             'user_id' => $userPayer->id,
-            'value' => 150.00,
+            'value' => 254.00,
             ]);
 
         $userPayee = User::factory()->create();
@@ -178,7 +177,7 @@ class TransactionTest extends TestCase
 
         $transaction  = Transaction::factory()->create([
             'payer_id' => $userPayer->id,
-            'payee_id' => $userPayer->id,
+            'payee_id' => $userPayee->id,
             'value' => 25.00,
             ]);
 

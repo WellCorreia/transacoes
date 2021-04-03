@@ -106,7 +106,7 @@ class TransactionService implements TransactionServiceInterface
 
         DB::commit();
         return [
-          'status' => 200, 
+          'status' => 201, 
           'message' => "Create transaction",
         ];
       } catch (\Throwable $th) {
@@ -124,7 +124,6 @@ class TransactionService implements TransactionServiceInterface
     $response = json_decode(Http::get('https://run.mocky.io/v3/8fafdd68-a090-496f-8c9a-3442cf30dae6')->body(), true);
     return $response['message'] == 'Autorizado';
   }
-
 
   /**
    * Delete transaction by id

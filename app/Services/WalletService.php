@@ -156,8 +156,8 @@ class WalletService implements WalletServiceInterface
       if (empty($wallet)) {
         throw new ObjectNotFoundException("Wallet not found");
       }
-      
-      if ($wallet->value < $value || $value == 0) {
+
+      if ($wallet->value < $value || $value <= 0) {
         throw new FailTransactionException("Insufficient wallet value a transaction");
       }
       
@@ -181,7 +181,7 @@ class WalletService implements WalletServiceInterface
         throw new ObjectNotFoundException("Wallet not found");
       }
 
-      if ($value == 0) {
+      if ($value <= 0) {
         throw new FailTransactionException("Insufficient wallet value a transaction");
       }
 
