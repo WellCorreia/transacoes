@@ -30,11 +30,11 @@ class UserRequest extends FormRequest
     {
         return [
             'name' => ['required', 'max:255'],
-            'password' => ['required', 'max:255'],
-            'email' => ['required', 'max:255', 'email'],
+            'password' => ['required', 'max:254'],
+            'email' => ['required', 'max:253', 'email'],
             'cpf_cnpj' => ['required', new ValidateCPFCNPJ, 'max:30'],
-            'type' => ['required', 'max:255'],
-            'value_wallet' => ['min:0'],
+            'type' => ['required'],
+            'value_wallet' => ['numeric'],
         ];
     }
 

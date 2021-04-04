@@ -53,7 +53,7 @@ class WalletService implements WalletServiceInterface
       }
       return [
         'status' => 400,
-        'message' => 'Wallet not found',
+        'message' => 'Not found',
       ];
     } catch (\Throwable $th) {
       return [
@@ -97,13 +97,13 @@ class WalletService implements WalletServiceInterface
         $wallet = $this->repository->update($wallet, $id);
         return [
           'status' => 200,
-          'message' => 'User Updated',
+          'message' => 'Wallet Updated',
           'wallet' => $wallet
         ];
       }
       return [
         'status' => 400,
-        'message' => 'User not found',
+        'message' => 'Not found',
       ];
     } catch (\Throwable $th) {
       return [
@@ -125,12 +125,12 @@ class WalletService implements WalletServiceInterface
         $this->repository->delete($id);
         return [
           'status' => 200,
-          'message' => 'Transaction deleted',
+          'message' => 'Wallet deleted',
         ];
       }
       return [
         'status' => 400,
-        'message' => 'Transaction not found',
+        'message' => 'Not found wallet',
       ];
     } catch (\Throwable $th) {
       return [

@@ -101,13 +101,13 @@ class TransactionTest extends TestCase
     {
         
         $userPayer = User::factory()->create();
-        $walletPayer = Wallet::factory()->create([
+        Wallet::factory()->create([
             'user_id' => $userPayer->id,
             'value' => 15.00,
             ]);
 
         $userPayee = User::factory()->create();
-        $walletPayee = Wallet::factory()->create([
+        Wallet::factory()->create([
             'user_id' => $userPayee->id,
             'value' => 25.00,
             ]);
@@ -119,7 +119,6 @@ class TransactionTest extends TestCase
             ])->toArray();
 
         $response = $this->call('POST', 'api/transactions', $transaction);
-
         $this->assertEquals(400, $response->original['status']);
     }
 

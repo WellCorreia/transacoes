@@ -32,7 +32,7 @@ class UserController extends Controller
      * @param  App\Http\Requests\UserRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function storeUserWithWallet(UserRequest $request)
+    public function store(UserRequest $request)
     {
         $user = $request->all();
         $response = $this->service->createUserWithWallet($user);

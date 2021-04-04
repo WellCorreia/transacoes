@@ -89,21 +89,13 @@ class TransactionService implements TransactionServiceInterface
         $payer = $this->userService->findById($transaction['payer_id']);
         $payee = $this->userService->findById($transaction['payee_id']);
 
-        if ($payer['status'] != 200 || $payee['status'] != 200) {
-          return ['status' => 400, 'message' => "Payer or Payee invalid"];
-        }
-        
-        if ($payer['user']['type'] == 'shopkeeper') {
-          return [ 'status' => 400, 'message' => "Shopkeepers cannot be payer"];
+        $check = $this->validateRequeridDatasTransaction($payer, $payee);
+        if ($check['status'] == 400) {
+          return $check;
         }
 
         $this->walletService->debitWalletValue($payer['user']['wallet']['id'], $transaction['value']);
         $this->walletService->creditWalletValue($payee['user']['wallet']['id'], $transaction['value']);
-
-        if (!$this->externalAuthorizingService()) {
-          DB::rollback();
-          return [ 'status' => 400, 'message' => "Unauthorized external service"];
-        }
 
         $createdTransaction = $this->repository->create($transaction);
 
@@ -128,6 +120,42 @@ class TransactionService implements TransactionServiceInterface
     });
   }
 
+  /**
+   * Check datas
+   * @param array $payer
+   * @param array $payee
+   * @return array $result
+   * 
+   */
+  public function validateRequeridDatasTransaction($payer, $payee): array {
+    $result = [
+      'status' => 200,
+      'message' => ''
+    ];
+    
+    if ($payer['status'] != 200 || $payee['status'] != 200) {
+      $result = ['status' => 400, 'message' => "Payer or Payee invalid"];
+    } 
+    
+    else if ($payer['user']['id'] == $payee['user']['id']) {
+      $result = ['status' => 400, 'message' => "You cannot transfer to yourself"];
+    }
+
+    else if ($payer['user']['type'] == 'shopkeeper') {
+      $result = [ 'status' => 400, 'message' => "Shopkeepers cannot be payer"];
+    }
+    
+    if (!$this->externalAuthorizingService()) {
+      $result = [ 'status' => 400, 'message' => "Unauthorized external service"];
+    }
+
+    return $result;
+  }
+
+  /**
+   * Check autorizator
+   * @return boolean
+   */
   public function externalAuthorizingService() {
     $response = json_decode(Http::get(env('EXTERNAL_AUTORIZATOR_SERVICE'))->body(), true);
     return $response['message'] == 'Autorizado';

@@ -17,7 +17,7 @@ class Wallet extends Migration
             $table->id();
             $table->double('value', 15, 2)->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete("cascade");;
             $table->timestamps();
             $table->softDeletes();
         });

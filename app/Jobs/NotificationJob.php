@@ -35,7 +35,10 @@ class NotificationJob implements ShouldQueue
     {
         try {
             if(is_null($this->id)){
-                throw new \Exception("Error Processing Request");
+                return [ 
+                    'status' => 500,
+                    'message' => "Error Processing Request"
+                ];
             }
             
             $response = json_decode(Http::get(env('EXTERNAL_NOTIFICATION_SERVICE'))->body(), true);

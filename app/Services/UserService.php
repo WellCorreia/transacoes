@@ -168,7 +168,7 @@ class UserService implements UserServiceInterface
       }
       return [
         'status' => 400,
-        'message' => 'User not found',
+        'message' => 'Not found',
       ];
     } catch (\Throwable $th) {
       return [

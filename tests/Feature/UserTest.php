@@ -47,7 +47,7 @@ class UserTest extends TestCase
      */
     public function testShouldCreateUserWithWallet(){
         $user = User::factory()->make(['value_wallet' => 56.42])->toArray();
-        $response = $this->call('POST', 'api/users/wallet', $user);
+        $response = $this->call('POST', 'api/users', $user);
 
         $this->assertEquals(201, $response->original['status']);
         $this->assertEquals($user['cpf_cnpj'], $response->original['user']['cpf_cnpj']);
@@ -60,7 +60,7 @@ class UserTest extends TestCase
      */
     public function testNotShouldCreateUserWithWallet(){
         $user = User::factory()->make()->toArray();
-        $response = $this->call('POST', 'api/users/wallet', $user);
+        $response = $this->call('POST', 'api/users', $user);
 
         $this->assertEquals(500, $response->original['status']);
     }
