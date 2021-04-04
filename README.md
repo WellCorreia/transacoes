@@ -109,6 +109,13 @@ $ docker-compose up --build -d
 ```bash
 $ docker-compose up --build
 ```
+
+Como o sistema foi implementado utilizando o RabbitMQ utilizando do conceito de mensageria, é necessário startar a escuta do mesmo para que observe os eventos que ocorrem e execute a função definida. Para isso é necessário em um terminal executar o seguinte comando (na raiz do projeto):
+```bash
+$ php artisan queue:work
+```
+Isso fará com que o RabbitMQ comece a pegar o eventos que estão na pilha e execute sua função definida.
+
 Com o ambiente preparado já é possível executar os testes e a aplicação.
 
 ### Testes
@@ -197,3 +204,12 @@ Rolled back:  2021_03_31_000705_wallet (7.55ms)
 Rolling back: 2014_10_12_000000_create_users_table
 Rolled back:  2014_10_12_000000_create_users_table (7.47ms)
 ```
+
+### EndPoints
+
+Para vizualizar os endpoints [clique aqui](https://documenter.getpostman.com/view/7148072/TzCQaRU2#8f82b651-52b0-43f7-b1d8-e2f3b323990f)
+
+### SonarQube
+
+Para ter um código mais limpo e sem muita complexidade foi utilizado o SonarQube para localizar e corrigi-los.
+![image](https://user-images.githubusercontent.com/17796246/113517412-270fb900-9556-11eb-9df8-fb9804a03b9b.png)
