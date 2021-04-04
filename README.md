@@ -31,10 +31,10 @@ api
  └───.env.examplo               # Exemplo do arquivos de configuração de acesso a serviços
  └───.env.testing.examplo       # Exemplo do arquivos de configuração de acesso a serviços de teste
  └───.gitignore                 # Arquivo de configuração para evitar commitar arquivos desnecessários
- └───composer.json              # Exemplo do arquivos de configuração de acesso a serviços de teste
- └───docker-compose.yml         # Exemplo do arquivos de configuração de acesso a serviços de teste
- └───docker-entrypoint.sh       # Exemplo do arquivos de configuração de acesso a serviços de teste
- └───Dockerfile                 # Exemplo do arquivos de configuração de acesso a serviços de teste
+ └───composer.json              # Arquivo de configuração do projeto, definindo quais libs devem ser instaladas
+ └───docker-compose.yml         # Arquivo de definição dos containers docker
+ └───docker-entrypoint.sh       # Arquivo para execução dentro do container do php
+ └───Dockerfile                 # Arquivo de definição dos serviços necessário para o container php
  └───LICENSE                    # Licensa do projeto (MIT)
  └───phpunit.xml                # Arquivo de configuração do phpunit.
  └───server.php                 # Server
@@ -42,6 +42,158 @@ api
  └───webpack.mix.js             # Webpack
 ```
 
-Packages:
+### Stacks Utilizadas:
+
+PHP 7.4.16
+
+Laravel Framework 8.35.1
+
+[RabbitMQ 3.8.14-management (imagem docker)](https://hub.docker.com/r/amd64/rabbitmq/)
+
+[MySQL 5.7 (imagem docker)](https://hub.docker.com/r/mysql/mysql-server/)
+
+### Libs Utilizadas:
 
 [validator-cpf-cnpj](https://packagist.org/packages/bissolli/validador-cpf-cnpj)
+
+[laravel-queue-rabbitmq](https://github.com/vyuldashev/laravel-queue-rabbitmq)
+
+### Preparando a base do projeto
+
+Necessário primeiramente criar os .ENVs correspondente a aplicação e ao teste. Para isso é necessário executar esses dois comandos via terminal:
+
+```bash
+$ cp .env.example .env
+```
+```bash
+$ cp .env.testing.example .env.testing
+```
+
+### Configuração .ENV
+
+```
+DB_CONNECTION=mysql
+DB_HOST=[HOST] - Ex: 192.168.1.111
+DB_PORT=3306
+DB_DATABASE=[name_bd]
+DB_USERNAME=[name_user]
+DB_PASSWORD=[password]
+
+RABBITMQ_HOST=[HOST] - Ex: 192.168.1.111
+RABBITMQ_PORT=5672
+RABBITMQ_USER=[name_user]
+RABBITMQ_PASSWORD=[password]
+RABBITMQ_VHOST=/
+
+EXTERNAL_AUTORIZATOR_SERVICE=https://run.mocky.io/v3/8fafdd68-a090-496f-8c9a-3442cf30dae6
+EXTERNAL_NOTIFICATION_SERVICE=https://run.mocky.io/v3/b19f7b9f-9cbf-4fc6-ad22-dc30601aec04
+```
+
+### Configuração .ENV.TESTING
+
+```
+DB_CONNECTION=sqlite
+
+EXTERNAL_AUTORIZATOR_SERVICE=https://run.mocky.io/v3/8fafdd68-a090-496f-8c9a-3442cf30dae6
+EXTERNAL_NOTIFICATION_SERVICE=https://run.mocky.io/v3/b19f7b9f-9cbf-4fc6-ad22-dc30601aec04
+```
+
+Após criar o .ENVs, já é possível preparar o ambiente docker. Primeiramente iniciando o docker e após isso executando um dos seguintes comandos:
+
+(Liberando o terminal após execução)
+```bash
+$ docker-compose up --build -d
+```
+
+(Sem liberar o terminal após execução)
+```bash
+$ docker-compose up --build
+```
+Com o ambiente preparado já é possível executar os testes e a aplicação.
+
+### Testes
+
+Os testes foram feitos utilizados o banco de dados sqlite como base para as pesistências dos dados. É necessário executa-los é somente necessário executar esse comando na raiz do projeto:
+
+```bash
+$ sh ./tests.sh
+```
+Esse comando automatiza a execução dos comandos `php artisan migrate --env=testing`, `php artisan tests --env=testing`, `php artisan migrate:rollback --env=testing`
+. Correspontes a criar as tabelas, executar os testes e "deletar" as tabelas.
+
+#### Retorno dos testes
+```bash
+$ sh tests.sh 
+Migrating: 2014_10_12_000000_create_users_table
+Migrated:  2014_10_12_000000_create_users_table (22.33ms)
+Migrating: 2021_03_31_000705_wallet
+Migrated:  2021_03_31_000705_wallet (7.45ms)
+Migrating: 2021_04_01_194348_transaction
+Migrated:  2021_04_01_194348_transaction (7.26ms)
+Migrating: 2021_04_03_131645_notifications
+Migrated:  2021_04_03_131645_notifications (6.60ms)
+Warning: TTY mode is not supported on Windows platform.
+
+   PASS  Tests\Unit\NotificationTest
+  ✓ should create notification
+
+   PASS  Tests\Unit\TransactionTest
+  ✓ should external authorizing service
+  ✓ not should validate requerid datas transaction payer shopkeeper
+  ✓ not should validate requerid datas transaction can not transfer to yourself
+  ✓ not should validate requerid datas transaction payer or payee invalid
+
+   PASS  Tests\Unit\WalletTest
+  ✓ should create wallet
+  ✓ should updated wallet with debit value
+  ✓ not should updated wallet with debit value wallet not found
+  ✓ not should updated wallet with debit value because value equal zero
+  ✓ should updated wallet with value
+  ✓ not should updated wallet with value wallet not found
+  ✓ not should updated wallet with value because value equal zero
+
+   PASS  Tests\Feature\NotificationTest
+  ✓ should return all notifications
+  ✓ should return a notification
+  ✓ not should return a notification
+
+   PASS  Tests\Feature\TransactionTest
+  ✓ should return all transactions    
+  ✓ should return a transaction
+  ✓ not should return a transaction
+  ✓ a transaction should must be carried out
+  ✓ a transaction not should must be carried out payer without balance
+  ✓ a transaction not should must be carried out payer is shopkeeper
+  ✓ should delete transaction
+  ✓ not should delete transaction
+
+   PASS  Tests\Feature\UserTest
+  ✓ should return all users
+  ✓ should return user
+  ✓ not found user return
+  ✓ should create user with wallet
+  ✓ not should create user with wallet
+  ✓ should update user
+  ✓ not should update user
+  ✓ should delete user
+  ✓ not should delete user
+
+   PASS  Tests\Feature\WalletTest
+  ✓ should return all wallets
+  ✓ should return wallet
+  ✓ not found wallet return
+  ✓ should delete wallet
+  ✓ not should delete wallet
+
+  Tests:  37 passed
+  Time:   5.92s
+
+Rolling back: 2021_04_03_131645_notifications
+Rolled back:  2021_04_03_131645_notifications (12.91ms)
+Rolling back: 2021_04_01_194348_transaction
+Rolled back:  2021_04_01_194348_transaction (7.40ms)
+Rolling back: 2021_03_31_000705_wallet
+Rolled back:  2021_03_31_000705_wallet (7.55ms)
+Rolling back: 2014_10_12_000000_create_users_table
+Rolled back:  2014_10_12_000000_create_users_table (7.47ms)
+```
