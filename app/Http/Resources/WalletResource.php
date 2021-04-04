@@ -14,6 +14,21 @@ class WalletResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        if (!empty($this['result'])) {
+            return $this['result'];
+        }
+        if (!empty($this['message']) && $this['status'] != 500) {
+            return [
+                'message' => $this['message']
+            ];
+        }
+
+        return [
+            'message' => 'Internal server error'
+        ];
+    }
+
+    public static function getInstance($data){
+        return (new WalletResource($data));
     }
 }

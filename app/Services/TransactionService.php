@@ -97,21 +97,19 @@ class TransactionService implements TransactionServiceInterface
           return [ 'status' => 400, 'message' => "Shopkeepers cannot be payer"];
         }
 
-        $payerDebit = $this->walletService->debitWalletValue($payer['user']['wallet']['id'], $transaction['value']);
-        $payeeCredit = $this->walletService->creditWalletValue($payee['user']['wallet']['id'], $transaction['value']);
+        $this->walletService->debitWalletValue($payer['user']['wallet']['id'], $transaction['value']);
+        $this->walletService->creditWalletValue($payee['user']['wallet']['id'], $transaction['value']);
 
         if (!$this->externalAuthorizingService()) {
+          DB::rollback();
           return [ 'status' => 400, 'message' => "Unauthorized external service"];
         }
 
         $createdTransaction = $this->repository->create($transaction);
 
-        $createdNotification = $this->notificationService->create([
-          'reference_type' => 'transaction',
-          'reference_id' => $createdTransaction['id'],
-          'message' => 'Send: R$'.$transaction['value'].' From: '.$payer['user']['name'].' To: '.$payee['user']['name'],
-          'status' => 'pending'
-        ]);
+        $notification = $this->notificationService->builderNotification($payer['user'], $payee['user'], $createdTransaction);
+
+        $createdNotification = $this->notificationService->create($notification);
 
         DB::commit();
         return [

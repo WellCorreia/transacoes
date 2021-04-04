@@ -15,10 +15,10 @@ class Notifications extends Migration
     {
         Schema::create('notifications', function (Blueprint $table) {
             $table->id();
-            $table->enum('reference_type', ['transaction'])->nullable(false);
+            $table->enum('type', ['transaction'])->nullable(false);
             $table->unsignedBigInteger('reference_id')->nullable(false);
             $table->enum('status', ['pending', 'completed', 'failed'])->nullable(false);
-            $table->text('message')->nullable(false);
+            $table->text('data')->nullable(false);
             $table->timestamps();
             $table->softDeletes();
         });

@@ -5,7 +5,7 @@ namespace App\Services;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use App\Services\Interfaces\UserServiceInterface;
 use App\Services\Interfaces\WalletServiceInterface;
-use DB;
+use Illuminate\Support\Facades\DB;
 
 class UserService implements UserServiceInterface
 {

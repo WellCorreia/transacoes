@@ -5,6 +5,8 @@ namespace App\Services;
 use App\Repositories\NotificationRepository;
 use App\Services\Interfaces\NotificationServiceInterface;
 use App\Jobs\NotificationJob;
+use App\Models\User;
+use App\Models\Transaction;
 
 class NotificationService implements NotificationServiceInterface
 {
@@ -91,24 +93,24 @@ class NotificationService implements NotificationServiceInterface
   }
 
   /**
-   * Update user
-   * @param array $user
+   * Update notification
+   * @param array $notification
    * @param int $id
    * @return array
    */
-  public function update(array $user, int $id) {
+  public function update(array $notification, int $id) {
     try {
-      $userExist = $this->repository->findById($id);
-      if (!empty($userExist)) {
-        $this->repository->update($user, $id);
+      $notificationExist = $this->repository->findById($id);
+      if (!empty($notificationExist)) {
+        $this->repository->update($notification, $id);
         return [
           'status' => 200,
-          'message' => 'User updated',
+          'message' => 'Notification updated',
         ];
       }
       return [
         'status' => 400,
-        'message' => 'User not found',
+        'message' => 'Notification not found',
       ];
     } catch (\Throwable $th) {
       return [
@@ -116,5 +118,25 @@ class NotificationService implements NotificationServiceInterface
         'message' => $th->getMessage()
       ];
     }
+  }
+
+  /**
+   * Builder notification
+   * @param array $payer
+   * @param array $payee
+   * @param array $createdTransaction
+   * @return array
+   */
+  public function builderNotification($payer, $payee, $createdTransaction): array {
+    return [
+      'type' => 'transaction',
+      'reference_id' => $createdTransaction['id'],
+      'data' => json_encode([
+        'value' => $createdTransaction['value'],
+        'from' => $payer['id'],
+        'to' => $payee['id']
+      ], true),
+      'status' => 'pending'
+    ];
   }
 }

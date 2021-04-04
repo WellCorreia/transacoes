@@ -23,9 +23,9 @@ class NotificationFactory extends Factory
     {
         $faker = \Faker\Factory::create('pt_BR');
         return [
-            'reference_type' => 'transaction',
+            'type' => 'transaction',
             'reference_id' => $faker->randomDigit,
-            'message' => $faker->text,
+            'data' => $faker->text,
             'status' => 'completed',
         ];
     }

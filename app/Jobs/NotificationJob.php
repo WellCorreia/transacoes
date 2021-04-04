@@ -45,12 +45,12 @@ class NotificationJob implements ShouldQueue
                 $notification = app(NotificationService::class)->findById($this->id);
             
                 $createdNotification = [
-                    'reference_type' => $notification['notification']['reference_type'],
+                    'type' => $notification['notification']['type'],
                     'reference_id' => $notification['notification']['reference_id'],
-                    'message' => $notification['notification']['message'],
+                    'data' => $notification['notification']['data'],
                     'status' => 'completed',
                 ];
-                print_r(app(NotificationService::class)->update($createdNotification, $this->id));
+                app(NotificationService::class)->update($createdNotification, $this->id);
                 return true;
             }
 
