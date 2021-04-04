@@ -4,15 +4,17 @@ namespace App\Services;
 
 use App\Repositories\NotificationRepository;
 use App\Services\Interfaces\NotificationServiceInterface;
-use DB;
+use App\Jobs\NotificationJob;
 
 class NotificationService implements NotificationServiceInterface
 {
   protected $repository;
+  protected $notificationJob;
 
-  public function __construct(NotificationRepository $notificationRepository)
+  public function __construct(NotificationRepository $notificationRepository, NotificationJob $notificationJob)
   {
     $this->repository = $notificationRepository;
+    $this->notificationJob = $notificationJob;
   }
 
    /**
@@ -70,10 +72,43 @@ class NotificationService implements NotificationServiceInterface
   public function create(array $notification): array {
     try {
       $notification = $this->repository->create($notification);
+
+      $id = $notification['id'];
+
+      $this->notificationJob::dispatch($id)->afterCommit();
+
       return [
         'status' => 201,
         'message' => 'Created notification',
         'notification' => $notification
+      ];
+    } catch (\Throwable $th) {
+      return [
+        'status' => 500, 
+        'message' => $th->getMessage()
+      ];
+    }
+  }
+
+  /**
+   * Update user
+   * @param array $user
+   * @param int $id
+   * @return array
+   */
+  public function update(array $user, int $id) {
+    try {
+      $userExist = $this->repository->findById($id);
+      if (!empty($userExist)) {
+        $this->repository->update($user, $id);
+        return [
+          'status' => 200,
+          'message' => 'User updated',
+        ];
+      }
+      return [
+        'status' => 400,
+        'message' => 'User not found',
       ];
     } catch (\Throwable $th) {
       return [

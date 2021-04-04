@@ -52,7 +52,7 @@ class UserRepository implements UserRepositoryInterface{
     }
 
     /**
-     * Receive a wallet and an ID, update it and return
+     * Receive a user and an ID, update it and return
      * @param array $user
      * @param int $id
      * @return array

@@ -16,7 +16,15 @@ services:
       MYSQL_PASSWORD: ${DB_PASSWORD}
     networks:
       - network
-
+  
+  rabbitmq:
+    image: rabbitmq:3.8.14-management
+    networks:
+      - network
+    ports:
+      - 5672:5672
+      - 15672:15672
+      
   transacoes-api:
     image: transacoes-api/app
     build: .
@@ -31,3 +39,7 @@ services:
     depends_on:
       mysql-database:
         condition: service_healthy
+    depends_on:
+      - rabbitmq
+    links:
+      - rabbitmq

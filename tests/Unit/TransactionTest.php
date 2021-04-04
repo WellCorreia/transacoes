@@ -11,25 +11,25 @@ use App\Repositories\TransactionRepository;
 
 class TransactionTest extends TestCase
 {
-    // /**
-    //  * Should external authorizing service.
-    //  *
-    //  * @return void
-    //  */
-    // public function testShouldExternalAuthorizingService()
-    // {
-    //     $service = $this->getMockBuilder(TransactionService::class)
-    //     ->disableOriginalConstructor()
-    //     ->disableOriginalClone()
-    //     ->disableArgumentCloning()
-    //     ->disallowMockingUnknownTypes()
-    //     ->getMock();
+    /**
+     * Should external authorizing service.
+     *
+     * @return void
+     */
+    public function testShouldExternalAuthorizingService()
+    {
+        $service = $this->getMockBuilder(TransactionService::class)
+        ->disableOriginalConstructor()
+        ->disableOriginalClone()
+        ->disableArgumentCloning()
+        ->disallowMockingUnknownTypes()
+        ->getMock();
 
-    //     $service->expects($this->once())
-    //         ->method('externalAuthorizingService')
-    //         ->willReturn(true);
+        $service->expects($this->once())
+            ->method('externalAuthorizingService')
+            ->willReturn(true);
 
-    //     $response = $service->externalAuthorizingService();
-    //     $this->assertTrue($response);
-    // }
+        $response = $service->externalAuthorizingService();
+        $this->assertTrue($response);
+    }
 }

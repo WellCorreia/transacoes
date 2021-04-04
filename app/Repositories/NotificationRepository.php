@@ -38,4 +38,14 @@ class NotificationRepository implements NotificationRepositoryInterface{
     public function create(array $notification) {
         return $this->notification->create($notification);
     }
+
+    /**
+     * Receive a notification and an ID, update it and return
+     * @param array $notification
+     * @param int $id
+     * @return array
+     */
+    public function update(array $notification, int $id) {
+        return $this->notification->find($id)->update($notification);
+    }
 }

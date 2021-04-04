@@ -11,6 +11,7 @@ use App\Services\Interfaces\UserServiceInterface;
 use App\Services\Interfaces\WalletServiceInterface;
 use App\Services\Interfaces\TransactionServiceInterface;
 use App\Services\Interfaces\NotificationServiceInterface;
+use App\Jobs\NotificationJob;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -39,6 +40,10 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             NotificationServiceInterface::class,
             NotificationService::class,
+        );
+
+        $this->app->bind(
+            NotificationJob::class,
         );
     }
 

@@ -7,6 +7,7 @@ use Tests\TestCase;
 use App\Models\Notification;
 use App\Repositories\NotificationRepository;
 use App\Services\NotificationService;
+use App\Jobs\NotificationJob;
 
 class NotificationTest extends TestCase
 {
@@ -15,9 +16,11 @@ class NotificationTest extends TestCase
      *
      * @return void
      */
-    public function testShouldCreateWallet()
+    public function testShouldCreateNotification()
     {
         $notification = Notification::factory()->make()->toArray();
+        $notificationWithId = $notification;
+        $notificationWithId['id'] = 2;
 
         $repository = $this->getMockBuilder(NotificationRepository::class)
                 ->disableOriginalConstructor()
@@ -28,11 +31,21 @@ class NotificationTest extends TestCase
         $repository->expects($this->once())
             ->method('create')
             ->with($this->equalTo($notification))
-            ->willReturn(201);
+            ->willReturn($notificationWithId);
 
-        $notificationService = new NotificationService($repository);
+        $notificationJob = $this->getMockBuilder(NotificationJob::class)
+            ->disableOriginalConstructor()
+            ->disableOriginalClone()
+            ->setMethods()
+            ->getMock();
+
+
+        $this->expectsJobs(NotificationJob::class);
+
+        $notificationService = new NotificationService($repository, $notificationJob);
 
         $response = $notificationService->create($notification);
+        
         $this->assertEquals(201, $response['status']);
     }
 }

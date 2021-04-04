@@ -3,15 +3,12 @@
 namespace App\Services;
 
 use App\Repositories\TransactionRepository;
-use App\Repositories\Interfaces\TransactionRepositoryInterface;
 use App\Services\WalletService;
 use App\Services\UserService;
-use App\Services\Interfaces\UserServiceInterface;
-use App\Services\Interfaces\WalletServiceInterface;
+use App\Services\NotificationService;
 use App\Services\Interfaces\TransactionServiceInterface;
 use Illuminate\Support\Facades\Http;
-use DB;
-use Exception;
+use Illuminate\Support\Facades\DB;
 
 class TransactionService implements TransactionServiceInterface
 {
@@ -111,7 +108,7 @@ class TransactionService implements TransactionServiceInterface
 
         $createdNotification = $this->notificationService->create([
           'reference_type' => 'transaction',
-          'reference_id' => $createdTransaction->id,
+          'reference_id' => $createdTransaction['id'],
           'message' => 'Send: R$'.$transaction['value'].' From: '.$payer['user']['name'].' To: '.$payee['user']['name'],
           'status' => 'pending'
         ]);
@@ -133,8 +130,8 @@ class TransactionService implements TransactionServiceInterface
     });
   }
 
-  private function externalAuthorizingService() {
-    $response = json_decode(Http::get('https://run.mocky.io/v3/8fafdd68-a090-496f-8c9a-3442cf30dae6')->body(), true);
+  public function externalAuthorizingService() {
+    $response = json_decode(Http::get(env('EXTERNAL_AUTORIZATOR_SERVICE'))->body(), true);
     return $response['message'] == 'Autorizado';
   }
 
