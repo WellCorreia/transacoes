@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
 use App\Services\UserService;
-use App\Http\Resources\UserResource;
 
 class UserController extends Controller
 {
@@ -27,19 +26,6 @@ class UserController extends Controller
         return response()->json($response)->setStatusCode($response['status']);
     }
 
-    // /**
-    //  * Store a newly created resource in storage.
-    //  *
-    //  * @param  App\Http\Requests\UserRequest  $request
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function store(UserRequest $request)
-    // {
-    //     $user = $request->all();
-    //     $response = $this->service->create($user);
-    //     return response()->json($response)->setStatusCode($response['status']);
-    // }
-    
     /**
      * Store a newly created resource in storage.
      *

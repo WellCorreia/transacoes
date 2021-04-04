@@ -3,15 +3,10 @@
 namespace App\Services;
 
 use App\Repositories\WalletRepository;
-use App\Services\UserService;
-use App\Services\Interfaces\UserServiceInterface;
 use App\Services\Interfaces\WalletServiceInterface;
 
 use App\Exceptions\ObjectNotFoundException;
 use App\Exceptions\FailTransactionException;
-
-use Exception;
-
 class WalletService implements WalletServiceInterface
 {
   protected $repository;
@@ -25,7 +20,7 @@ class WalletService implements WalletServiceInterface
    * Find all users
    * @return array
    */
-  public function findAll() {
+  public function findAll(): array {
     try {
       $wallets = $this->repository->findAll();
       return [
@@ -46,7 +41,7 @@ class WalletService implements WalletServiceInterface
    * @param int $id
    * @return array
    */
-  public function findById(int $id) {
+  public function findById(int $id): array {
     try {
       $wallet = $this->repository->findById($id);
       if (!empty($wallet)) {
@@ -73,7 +68,7 @@ class WalletService implements WalletServiceInterface
    * @param array $wallet
    * @return array
    */
-  public function create(array $wallet) {
+  public function create(array $wallet): array {
     try {
       $wallet = $this->repository->create($wallet);
       return [
@@ -95,7 +90,7 @@ class WalletService implements WalletServiceInterface
    * @param int $id
    * @return array
    */
-  public function update(array $wallet, int $id) {
+  public function update(array $wallet, int $id): array {
     try {
       $walletExist = $this->repository->findById($id);
       if (!empty($walletExist)) {
@@ -123,7 +118,7 @@ class WalletService implements WalletServiceInterface
    * @param int $id
    * @return array
    */
-  public function delete(int $id) {
+  public function delete(int $id): array {
     try {
       $wallet = $this->repository->findById($id);
       if (!empty($wallet)) {

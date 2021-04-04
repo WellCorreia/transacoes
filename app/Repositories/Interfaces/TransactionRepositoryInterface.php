@@ -8,5 +8,5 @@ interface TransactionRepositoryInterface
   public function findAll();
   public function findById(int $id);
   public function create(array $transaction);
-  // public function delete(int $id);
+  public function delete(int $id);
 }

@@ -22,7 +22,7 @@ class UserService implements UserServiceInterface
    * Find all users
    * @return array
    */
-  public function findAll() {
+  public function findAll(): array {
     try {
       $users = $this->repository->findAll();
       return [
@@ -43,7 +43,7 @@ class UserService implements UserServiceInterface
    * @param int $id
    * @return array
    */
-  public function findById(int $id) {
+  public function findById(int $id): array {
     try {
       $user = $this->repository->findById($id);
       if (!empty($user)) {
@@ -70,7 +70,7 @@ class UserService implements UserServiceInterface
    * @param array $user with value wallet
    * @return array
    */
-  public function createUserWithWallet(array $user) {
+  public function createUserWithWallet(array $user): array {
 
     return DB::transaction(function () use ($user) {
       try {
@@ -129,7 +129,7 @@ class UserService implements UserServiceInterface
    * @param int $id
    * @return array
    */
-  public function update(array $user, int $id) {
+  public function update(array $user, int $id): array {
     try {
       $userExist = $this->repository->findById($id);
       if (!empty($userExist)) {

@@ -2,7 +2,6 @@
 
 namespace App\Services\Interfaces;
 
-
 interface NotificationServiceInterface
 {
   public function findAll(): array;

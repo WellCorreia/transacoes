@@ -5,8 +5,6 @@ namespace App\Services;
 use App\Repositories\NotificationRepository;
 use App\Services\Interfaces\NotificationServiceInterface;
 use App\Jobs\NotificationJob;
-use App\Models\User;
-use App\Models\Transaction;
 
 class NotificationService implements NotificationServiceInterface
 {
@@ -98,7 +96,7 @@ class NotificationService implements NotificationServiceInterface
    * @param int $id
    * @return array
    */
-  public function update(array $notification, int $id) {
+  public function update(array $notification, int $id): array {
     try {
       $notificationExist = $this->repository->findById($id);
       if (!empty($notificationExist)) {
