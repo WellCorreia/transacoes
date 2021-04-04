@@ -81,8 +81,8 @@ DB_PASSWORD=[password]
 
 RABBITMQ_HOST=[HOST] - Ex: 192.168.1.111
 RABBITMQ_PORT=5672
-RABBITMQ_USER=[name_user]
-RABBITMQ_PASSWORD=[password]
+RABBITMQ_USER=guest
+RABBITMQ_PASSWORD=guest
 RABBITMQ_VHOST=/
 
 EXTERNAL_AUTORIZATOR_SERVICE=https://run.mocky.io/v3/8fafdd68-a090-496f-8c9a-3442cf30dae6
@@ -110,17 +110,9 @@ $ docker-compose up --build -d
 $ docker-compose up --build
 ```
 
-Como o sistema foi implementado utilizando o RabbitMQ utilizando do conceito de mensageria, é necessário startar a escuta do mesmo para que observe os eventos que ocorrem e execute a função definida. Para isso é necessário em um terminal executar o seguinte comando (na raiz do projeto):
-```bash
-$ php artisan queue:work
-```
-Isso fará com que o RabbitMQ comece a pegar o eventos que estão na pilha e execute sua função definida.
-
-Com o ambiente preparado já é possível executar os testes e a aplicação.
-
 ### Testes
 
-Os testes foram feitos utilizados o banco de dados sqlite como base para as pesistências dos dados. É necessário executa-los é somente necessário executar esse comando na raiz do projeto:
+Os testes foram feitos utilizados o banco de dados sqlite como base para as pesistências dos dados. É necessário executa-los localmente e para executar deve-se executar esse comando na raiz do projeto:
 
 ```bash
 $ sh ./tests.sh
