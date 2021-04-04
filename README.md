@@ -204,10 +204,14 @@ Rolled back:  2021_03_31_000705_wallet (7.55ms)
 Rolling back: 2014_10_12_000000_create_users_table
 Rolled back:  2014_10_12_000000_create_users_table (7.47ms)
 ```
+### Diagrama Entidade Relacional
+
+As tabelas e suas relações correspondem a esse DER
+![image](https://user-images.githubusercontent.com/17796246/113519119-aa360c80-9560-11eb-9311-06de69d974c8.png)
 
 ### EndPoints
 
-Para vizualizar os endpoints [clique aqui](https://documenter.getpostman.com/view/7148072/TzCQaRU2#8f82b651-52b0-43f7-b1d8-e2f3b323990f)
+A API possui end-point para serviços de todas as suas entidades! Para vizualiza-los [clique aqui](https://documenter.getpostman.com/view/7148072/TzCQaRU2#8f82b651-52b0-43f7-b1d8-e2f3b323990f)
 
 ### SonarQube
 
