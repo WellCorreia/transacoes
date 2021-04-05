@@ -204,8 +204,3 @@ As tabelas e suas relações correspondem a esse DER
 ### EndPoints
 
 A API possui end-point para serviços de todas as suas entidades! Para vizualiza-los [clique aqui](https://documenter.getpostman.com/view/7148072/TzCQaRU2#8f82b651-52b0-43f7-b1d8-e2f3b323990f)
-
-### SonarQube
-
-Para ter um código mais limpo e sem muita complexidade foi utilizado o SonarQube para localizar e corrigi-los.
-![image](https://user-images.githubusercontent.com/17796246/113517412-270fb900-9556-11eb-9df8-fb9804a03b9b.png)
